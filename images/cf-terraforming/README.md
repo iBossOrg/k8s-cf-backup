@@ -4,6 +4,7 @@
 
 * [Alpine Linux](https://github.com/iBossOrg/k8s-alpine) as a base system.
 * [Cloudflare cf-terraforming](https://github.com/cloudflare/cf-terraforming) to backup the Cloudflare configuration.
+* [cf-backup script](rootfs/usr/bin/cf-backup) for Kubernetes Cron Job.
 
 ## Usage
 
@@ -49,20 +50,20 @@ spec:
 
 ### Environment variables
 
-`cf-terraforming` command does not use any environment variables.
+`cf-terraforming` command does not use any environment variables. See [cf-terraforming command help](https://github.com/cloudflare/cf-terraforming#usage)
 
 `cf-backup` command accepts the following environment variables:
 
 | Variable | Default value | Description |
 | -------- | ------------- | ----------- |
 | BACKUP_FILE | `main.tf` or `terraform.tfstate` | Where the `cf-terraforming` output will be saved. Default value depends on `EXPORT_TFSTATE` variable. |
-| COMMAND | `all` |  `cf-terraforming` [command](https://github.com/cloudflare/cf-terraforming) |
+| COMMAND | `all` | [cf-terraforming command](https://github.com/cloudflare/cf-terraforming#usage) |
 | CF_ACCOUNT | - | Cloudflare account id. |
 | CF_EMAIL | - | Cloudflare accont email. |
 | CF_KEY | - | Cloudflare API global key. |
 | CF_TOKEN | - | Cloudflare API global token. |
-| CF_ZONE | - | Cloudflare Zone to be backed up. |
-| EXPORT_TFSTATE | - | If defined, export Terrform state instead of configuration. |
+| CF_ZONE | - | Limit the export to a single zone (name or ID). |
+| EXPORT_TFSTATE | - | If defined, export the Terrform state instead of the configuration. |
 | LOG_LEVEL | `info` | `cf-terraforming` log level. |
 
 ## Contributing

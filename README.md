@@ -4,7 +4,7 @@
 
 Backup [Cloudflare cf-terraforming](https://github.com/cloudflare/cf-terraforming) with:
 
-* [cf-terraforming image](images/cf-terraforming).
+* [cf-terraforming image](images/cf-terraforming)
 
 ## Usage
 
@@ -25,7 +25,7 @@ git clone https://github.com/ibossorg/k8s-cf-backup
 Use the command `make` in the project directory:
 
 ```bash
-make all                      # Build Docker images, run tests and package Helm charts
+make all                      # Build Docker images
 make images                   # Build Docker images and run tests
 make clean                    # Delete all running containers and work files
 ```
