@@ -1,0 +1,13 @@
+# https://docs.docker.com/engine/reference/builder/#dockerignore-file
+
+# Project files
+Makefile
+README.md
+docker-compose.yml
+spec
+.docker-*
+.rspec
+
+# Generated Terraform files
+*.tf
+*.tfstate

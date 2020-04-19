@@ -1,0 +1,19 @@
+#!/bin/bash
+
+[ -n "${CF_ACCOUNT}" ]      && set -- --account ${CF_ACCOUNT} "$@"
+[ -n "${CF_EMAIL}" ]        && set -- --email ${CF_EMAIL} "$@"
+[ -n "${CF_KEY}" ]          && set -- --key ${CF_KEY} "$@"
+[ -n "${CF_TOKEN}" ]        && set -- --token ${CF_TOKEN} "$@"
+[ -n "${CF_ZONE}" ]         && set -- --zone ${CF_ZONE} "$@"
+[ -n "${EXPORT_TFSTATE}" ]  && set -- --tfstate "$@"
+[ -n "${LOG_LEVEL}" ]       && set -- --loglevel ${LOG_LEVEL} "$@"
+[ -n "${COMMAND}" ]         && set -- ${COMMAND} "$@"
+
+if [ -z "${EXPORT_TFSTATE}" ]; then
+  : ${BACKUP_FILE:=main.tf}
+else
+  : ${BACKUP_FILE:=terraform.tfstate}
+fi
+
+mkdir -p "$(dirname "${BACKUP_FILE}")"
+cf-terraforming "$@" > "${BACKUP_FILE}"

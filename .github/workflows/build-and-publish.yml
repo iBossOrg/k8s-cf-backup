@@ -1,0 +1,46 @@
+name: Build and Publish to Docker Hub
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  schedule:
+    - cron: 0 3 * * 0    # Run at 03:10 UTC every Sunday"
+
+jobs:
+  build-and-publish:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    # Run on schedule or if commit message doesn't contain "[skip ci]"
+    if: github.event_name == 'schedule' || !contains(github.event.head_commit.message, '[skip ci]')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+
+      - name: Checkout Mk
+        run:  git clone https://github.com/iBossOrg/Mk ../Mk
+
+      - name: Login to image registry
+        uses: azure/docker-login@v1
+        with:
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Pull images
+        run: make pull
+        continue-on-error: true
+        working-directory: images
+
+
+      - name: Build and test images
+        run:  make all
+        env: { RSPEC_FORMAT: doc }
+        working-directory: images
+
+      - name: Publish images
+        # Publish only commits to master branch
+        if: github.ref == 'refs/heads/master'
+        run:  make publish
+        working-directory: images
+
